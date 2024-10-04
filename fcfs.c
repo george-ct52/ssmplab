@@ -1,93 +1,29 @@
-#include <stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
+void main(){
+    int no_req,diff,seek=0,head_movs=0;;
 
-void waittime(int at[10],int bt[10],int wt[10],int n)
-{
-        wt[0]=0;
-	for(int i=1;i<n;i++)
-	{
-		wt[i]=bt[i-1]+wt[i-1];
-	}
-
-}
-
-void swap(int* arr, int i, int j) 
-{ 
-    int temp = arr[i]; 
-    arr[i] = arr[j]; 
-    arr[j] = temp; 
-}
-
-//to sort the processes according to thge arrival time 
-void sortarrivaltime(int at[],int bt[],int p[], int n)
-{
-  for(int i=0;i<n-1;i++)
-   {
-    for(int j=0;j<n-i-1;j++)
-     {
-       if (at[j] > at[j + 1]) 
-         {
-                swap(at, j, j + 1);
-                swap(bt, j, j + 1);
-                swap(p, j, j + 1); 
-          }
-     }
-    }
-}
-
-
-
-
-
-int main()
-{
-int temp,ct[10],bt[10],at[10],wt[10],p[10],awt,tat[10],atat,n;
-atat=0;
-awt=0;
-printf("Enter the number of processes :");
-scanf("%d",&n);
-
-printf("enter %d process:",n);
-    for(int i=0;i<n;i++)
+    printf("Enter the number of block requests:");
+    scanf("%d",&no_req);
+    int seq[no_req+1];
+    printf("Enter the sequence:");
+    for (int i = 1; i <= no_req; i++)
     {
-    scanf("%d",&p[i]);
+        scanf("%d",&seq[i]);
     }
-for (int i=0;i<n;i++)
-{
- printf("Enter Arrival Time and Burst time :");
- scanf("%d%d",&at[i],&bt[i]);
-}
+    
+    printf("Enter the initial head position:");
+    scanf("%d",&seq[0]);
 
-sortarrivaltime(at,bt,p,n);
-
-waittime(at,bt,wt,n);
-ct[0]=at[0]+bt[0];
-for(int i=1;i<n;i++)
- {  
-      
-   temp=0;
-   if(ct[i-1]<at[i])
+    for(int i=0;i<no_req;i++)
     {
-        temp=at[i]-ct[i-1];
+        diff=abs(seq[i+1]-seq[i]);
+        seek+=diff;
+        head_movs++;
+        printf("%d->",seq[i]);
     }
-   ct[i]=ct[i-1]+bt[i]+temp;
- }
-for(int i=0;i<n;i++)
-    {
-    tat[i]=ct[i]-at[i];
-    wt[i]=tat[i]-bt[i];
-    atat+=tat[i];
-    awt+=wt[i];
-    }
-    atat=atat/n;
-    awt=awt/n;
+    printf("%d",seq[no_req]);
+    printf("\nSeek Time=%d",seek);
+    printf("\nTotal Head Movements=%d",head_movs);
 
-
-printf("\np\t A.T\t B.T\t C.T\t TAT\t WT");
-for(int i =0;i<n;i++)
-{
-  printf("\n%d\t %d\t %d\t %d\t %d\t%d ",p[i],at[i],bt[i],ct[i],tat[i],wt[i]);
-}
- printf("\n Average Turnaround Time : %d",atat);
- printf("\n Average Waiting Time : %d",awt);
- return 0;
 }
